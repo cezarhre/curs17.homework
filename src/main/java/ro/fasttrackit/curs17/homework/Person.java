@@ -2,19 +2,7 @@ package ro.fasttrackit.curs17.homework;
 
 import java.util.Objects;
 
-public class Person {
-    private final String firstName;
-    private final String lastName;
-    private final int age;
-    private final String city;
-
-    public Person(String firstName, String lastName, int age, String city) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.city = city;
-
-    }
+public record Person(String firstName, String lastName, int age, String city) {
 
     public int getAge() {
         return age;
