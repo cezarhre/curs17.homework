@@ -5,18 +5,30 @@ import java.util.Objects;
 public record Person(String firstName, String lastName, int age, String city) {
 
     public int getAge() {
+        if (age < 0 || age > 120) {
+            throw new IllegalArgumentException("Not a valid age");
+        }
         return age;
     }
 
     public String getCity() {
+        if (city == null || city.isEmpty()) {
+            throw new IllegalArgumentException("Not a valid city name");
+        }
         return city;
     }
 
     public String getLastName() {
+        if (lastName == null || lastName.isEmpty()) {
+            throw new IllegalArgumentException("Not a valid last name");
+        }
         return lastName;
     }
 
     public String getFirstName() {
+        if(firstName == null || firstName.isEmpty()){
+            throw new IllegalArgumentException("Not a valid first name");
+        }
         return firstName;
     }
 

@@ -10,13 +10,13 @@ public class PersonService {
     private final List<Person> persons;
 
     public PersonService(List<Person> persons) {
-        this.persons = persons == null
+        this.persons = persons == null || persons.isEmpty()
                 ? new ArrayList<>()
                 : new ArrayList<>(persons);
     }
 
     public List<String> firstLastName() {
-        return persons.stream()
+       return persons.stream()
                 .filter(Objects::nonNull)
                 .map(person -> String.format("%s %s",person.getFirstName(),person.getLastName()))
                 .collect(toList());
