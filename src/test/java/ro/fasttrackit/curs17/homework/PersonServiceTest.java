@@ -1,11 +1,12 @@
 package ro.fasttrackit.curs17.homework;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PersonServiceTest {
 
@@ -15,8 +16,7 @@ class PersonServiceTest {
         Person person = new Person(null, "Ionel",25, "Oradea");
         //RUN
         //ASSERT
-        IllegalArgumentException exc = Assertions.assertThrows(IllegalArgumentException.class, person::getFirstName);
-        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a valid first name");
+        assertThat(person.getFirstName()).isEqualTo("Not a valid first name");
     }
 
     @Test
@@ -34,8 +34,7 @@ class PersonServiceTest {
         Person person = new Person("Popescu", null,25, "Oradea");
         //RUN
         //ASSERT
-        IllegalArgumentException exc = Assertions.assertThrows(IllegalArgumentException.class, person::getLastName);
-        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a valid last name");
+        assertThat(person.getLastName()).isEqualTo("Not a valid last name");
     }
 
     @Test
@@ -62,18 +61,20 @@ class PersonServiceTest {
         Person person = new Person("Popescu", "Ion", 25, null);
         //RUN
         //ASSERT
-        IllegalArgumentException exc = Assertions.assertThrows(IllegalArgumentException.class, person::getCity);
-        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a valid city name");
+        assertThat(person.getCity()).isEqualTo("Not a valid city name");
     }
 
     @Test
     void testValidAge(){
         //SETUP
-        Person person = new Person("Popescu", "Ion", 121, "Oradea");
+        Person person = new Person ("Popescu", "Ion",250, "Oradea");
+        Person person1 = new Person ("Popescu", "Ion",-10, "Oradea");
         //RUN
         //ASSERT
-        IllegalArgumentException exc = Assertions.assertThrows(IllegalArgumentException.class, person::getAge);
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setAge(250));
         org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a valid age");
+        IllegalArgumentException exc1 = assertThrows(IllegalArgumentException.class, ()-> person1.setAge(-10));
+        org.assertj.core.api.Assertions.assertThat(exc1.getMessage()).isEqualTo("Not a valid age");
     }
 
     @Test
@@ -82,9 +83,11 @@ class PersonServiceTest {
         PersonService personService = new PersonService(null);
         PersonService personService1 = new PersonService(List.of());
         //RUN
+        List<Person> result = personService.sortFirstName();
+        List<Person> actual = personService1.sortLastName();
         //ASSERT
-        assertThat(personService).isEqualTo(personService);
-        assertThat(personService1).isEqualTo(personService1);
+        assertThat(result).isNullOrEmpty();
+        assertThat(actual).isNullOrEmpty();
     }
 
     @Test
@@ -101,7 +104,10 @@ class PersonServiceTest {
         //RUN
         List<String> result = personService.firstLastName();
         //ASSERT
-        assertThat(personService.firstLastName()).isEqualTo(result);
+        assertThat(result).contains("Popescu Ion")
+                .isNotEmpty()
+                .isNotNull();
+
     }
 
     @Test
