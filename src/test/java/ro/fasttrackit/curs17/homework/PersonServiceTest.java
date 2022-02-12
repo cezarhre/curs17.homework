@@ -16,16 +16,18 @@ class PersonServiceTest {
         Person person = new Person(null, "Ionel",25, "Oradea");
         //RUN
         //ASSERT
-        assertThat(person.getFirstName()).isEqualTo("Not a valid first name");
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setFirstName(null));
+        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a name");
     }
 
     @Test
     void testFirstNameNotEmpty(){
         //SETUP
-        Person person = new Person(" ", "Ionel",25, "Oradea");
+        Person person = new Person("", "Ionel",25, "Oradea");
         //RUN
         //ASSERT
-        assertThat(person.getFirstName()).isEqualTo(" ");
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setFirstName(""));
+        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a name");
     }
 
     @Test
@@ -34,25 +36,28 @@ class PersonServiceTest {
         Person person = new Person("Popescu", null,25, "Oradea");
         //RUN
         //ASSERT
-        assertThat(person.getLastName()).isEqualTo("Not a valid last name");
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setLastName(null));
+        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a name");
     }
 
     @Test
     void testLastNameNotEmpty(){
         //SETUP
-        Person person = new Person("Popescu", " ",25, "Oradea");
+        Person person = new Person("Popescu", "",25, "Oradea");
         //RUN
         //ASSERT
-        assertThat(person.getLastName()).isEqualTo(" ");
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setLastName(""));
+        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a name");
     }
 
     @Test
     void testCityNotEmpty(){
         //SETUP
-        Person person = new Person ("Popescu", "Ion",25, " ");
+        Person person = new Person ("Popescu", "Ion",25, "");
         //RUN
         //ASSERT
-        assertThat(person.getCity()).isEqualTo(" ");
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setCity(""));
+        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a city name");
     }
 
     @Test
@@ -61,19 +66,28 @@ class PersonServiceTest {
         Person person = new Person("Popescu", "Ion", 25, null);
         //RUN
         //ASSERT
-        assertThat(person.getCity()).isEqualTo("Not a valid city name");
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setCity(null));
+        org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a city name");
     }
 
     @Test
-    void testValidAge(){
+    void testValidAgePositive(){
         //SETUP
         Person person = new Person ("Popescu", "Ion",250, "Oradea");
-        Person person1 = new Person ("Popescu", "Ion",-10, "Oradea");
+
         //RUN
         //ASSERT
         IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, ()->person.setAge(250));
         org.assertj.core.api.Assertions.assertThat(exc.getMessage()).isEqualTo("Not a valid age");
-        IllegalArgumentException exc1 = assertThrows(IllegalArgumentException.class, ()-> person1.setAge(-10));
+    }
+
+    @Test
+    void testValidAgeNegative() {
+        //SETUP
+        Person person = new Person("Popescu", "Ion", -10, "Oradea");
+
+        //ASSERT
+        IllegalArgumentException exc1 = assertThrows(IllegalArgumentException.class, () -> person.setAge(-10));
         org.assertj.core.api.Assertions.assertThat(exc1.getMessage()).isEqualTo("Not a valid age");
     }
 

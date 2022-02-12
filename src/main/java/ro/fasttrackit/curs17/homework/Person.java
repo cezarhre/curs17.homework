@@ -3,22 +3,16 @@ package ro.fasttrackit.curs17.homework;
 import java.util.Objects;
 
 public final class Person {
-    private final String firstName;
-    private final String lastName;
+    private String firstName;
+    private String lastName;
     private int age;
-    private final String city;
+    private String city;
 
     public Person(String firstName, String lastName, int age, String city) {
         this.age = age;
-        this.firstName = firstName == null || firstName.isEmpty()
-                ? "Not a valid first name"
-                : firstName;
-        this.lastName = lastName == null || lastName.isEmpty()
-                ? "Not a valid last name"
-                : lastName;
-        this.city = city == null || city.isEmpty()
-                ? "Not a valid city name"
-                : city;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.city = city;
     }
 
     public int getAge() {
@@ -38,6 +32,30 @@ public final class Person {
 
     }
 
+    public void setLastName(String lastName) {
+        if(lastName == null || lastName.isEmpty()) {
+            throw new IllegalArgumentException("Not a name");
+        }else {
+            this.lastName = lastName;
+        }
+    }
+
+    public void setFirstName(String firstName) {
+        if(firstName == null || firstName.isEmpty()){
+            throw new IllegalArgumentException("Not a name");
+        }else {
+            this.firstName = firstName;
+        }
+    }
+
+    public void setCity(String city) {
+        if(city == null || city.isEmpty()){
+            throw new IllegalArgumentException("Not a city name");
+        }else {
+            this.city = city;
+        }
+    }
+
     public void setAge(int age) {
         if (age < 0 || age > 120){
             throw new IllegalArgumentException("Not a valid age");
@@ -47,27 +65,24 @@ public final class Person {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Person) obj;
-        return Objects.equals(this.firstName, that.firstName) &&
-                Objects.equals(this.lastName, that.lastName) &&
-                this.age == that.age &&
-                Objects.equals(this.city, that.city);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person person)) return false;
+        return getAge() == person.getAge() && Objects.equals(getFirstName(), person.getFirstName()) && Objects.equals(getLastName(), person.getLastName()) && Objects.equals(getCity(), person.getCity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, age, city);
+        return Objects.hash(getFirstName(), getLastName(), getAge(), getCity());
     }
 
     @Override
     public String toString() {
-        return "Person[" +
-                "firstName=" + firstName + ", " +
-                "lastName=" + lastName + ", " +
-                "age=" + age + ", " +
-                "city=" + city + ']';
+        return "Person{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", city='" + city + '\'' +
+                '}';
     }
 }
